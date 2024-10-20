@@ -9,7 +9,7 @@ class Map:
         self.image_size_h = 288
         self.image_x, self.image_y = self.image_size_w//2,self.image_size_h//2
         if Map.image==None:
-            self.image=load_image('test_map.png')
+            self.image=load_image('map.png')
 
     def update(self):
         pass
