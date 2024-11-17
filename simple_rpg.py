@@ -1,41 +1,7 @@
 from pico2d import *
+import map as Map
 
 # Game object class here
-class Map:
-    image=None
-    def __init__(self):
-        self.x,self.y=window_size_w//2,window_size_h//2
-        self.image_size_w = 416
-        self.image_size_h = 288
-        self.image_x, self.image_y = self.image_size_w//2,self.image_size_h//2
-        if Map.image==None:
-            self.image=load_image('map.png')
-
-    def update(self):
-        pass
-
-    def handle_event(self, event):
-        if event.type==SDL_KEYDOWN and event.key==SDLK_UP:
-            if self.image_y + 32 < 288-32:
-                self.image_y += 5
-
-        if event.type == SDL_KEYDOWN and event.key == SDLK_DOWN:
-            if self.image_y - 32 >0+32:
-                self.image_y -= 5
-
-        if event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
-            if self.image_x + 96 < 416:
-                self.image_x += 5
-
-        if event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
-            if self.image_x - 96 > 0:
-                self.image_x -= 5
-        pass
-
-    def draw(self):
-        self.image.clip_draw(self.image_x-96, self.image_y-64, 192,128, self.x, self.y,window_size_w,window_size_h)
-        #self.image.draw(self.x,self.y,window_size_w,window_size_h)
-
 def handle_events():
     global running
 
@@ -49,7 +15,6 @@ def handle_events():
             map.handle_event(event)
             pass
 
-
 def reset_world():
     global running
     global world
@@ -58,7 +23,7 @@ def reset_world():
     running = True
     world = []
 
-    map = Map()
+    map = Map.Map()
     world.append(map)
     pass
 
