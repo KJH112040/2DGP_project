@@ -1,4 +1,6 @@
 from pico2d import *
+
+import player as Player
 import map as Map
 
 # Game object class here
@@ -19,12 +21,15 @@ def reset_world():
     global running
     global world
     global map
+    global player
 
     running = True
     world = []
 
     map = Map.Map()
     world.append(map)
+    player=Player.Player()
+    world.append(player)
     pass
 
 
