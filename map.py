@@ -73,9 +73,9 @@ class xMove:
     @staticmethod
     def do(map):
         if map.dir_x==1 and map.image_x + 96 < map.image_size_w:
-            map.image_x += map.dir_x * 4
+            map.image_x += map.dir_x * 2
         elif map.dir_x==-1 and map.image_x -96 > 0:
-            map.image_x += map.dir_x * 4
+            map.image_x += map.dir_x * 2
         pass
     @staticmethod
     def draw(map):
@@ -96,9 +96,9 @@ class yMove:
     @staticmethod
     def do(map):
         if map.dir_y==1 and map.image_y +64 <map.image_size_h:
-            map.image_y += map.dir_y * 4
+            map.image_y += map.dir_y * 2
         elif map.dir_y==-1 and map.image_y - 64 >0:
-            map.image_y += map.dir_y * 4
+            map.image_y += map.dir_y * 2
         pass
     @staticmethod
     def draw(map):

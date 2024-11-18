@@ -51,6 +51,7 @@ class Idle:
         player.dir_x=0
         player.dir_y=0
         player.frame=0
+        if player.action<4:player.action+=4
         pass
     @staticmethod
     def exit(player,e):
