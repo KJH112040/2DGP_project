@@ -20,9 +20,12 @@ class Map:
         self.state_machine.start(Idle)  # 초기 상태가 Idle
         self.state_machine.set_transitions(
             {
-                Idle: {right_down: xMove, left_down: xMove,up_keydown:yMove,down_keydown:yMove, left_up: xMove, right_up: xMove,up_keyup:yMove,down_keyup: yMove},
-                xMove: {right_down: Idle, left_down: Idle,up_keydown:yMove,down_keydown:yMove, right_up: Idle, left_up: Idle,up_keyup:yMove,down_keyup: yMove},
-                yMove:{right_down: xMove, left_down: xMove,up_keydown:Idle,down_keydown:Idle,up_keyup:Idle,down_keyup: Idle,right_up: xMove, left_up: xMove}
+                Idle: {right_down: xMove, left_down: xMove, up_keydown: yMove, down_keydown: yMove, left_up: xMove,
+                       right_up: xMove, up_keyup: yMove, down_keyup: yMove},
+                xMove: {right_down: Idle, left_down: Idle, up_keydown: yMove, down_keydown: yMove, right_up: Idle,
+                        left_up: Idle, up_keyup: xMove, down_keyup: xMove},
+                yMove: {right_down: xMove, left_down: xMove, up_keydown: Idle, down_keydown: Idle, up_keyup: Idle,
+                        down_keyup: Idle, right_up: yMove, left_up: yMove}
                 # 나중에 캐릭터 움직임 구현하면 캐릭터 움직임 이벤트와 같이 처리되도록 수정할 부분!
                 # 캐릭터 사망 시 이벤트로 시작했던 위치로 되돌아 가도록!
             }
