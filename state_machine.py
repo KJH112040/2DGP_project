@@ -2,8 +2,10 @@
 # 상태 이벤트 e = (종류, 실제값) 튜플로 정의
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_a, SDLK_UP, SDLK_DOWN
 
-def player_move_x(e):pass
-def player_move_y(e):pass
+def player_move_right(e):pass
+def player_move_left(e):pass
+def player_move_up(e):pass
+def player_move_down(e):pass
 
 def time_out(e): #e가 time out 인지 판단?
     return e[0] == 'TIME_OUT'

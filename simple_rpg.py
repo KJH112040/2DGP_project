@@ -15,6 +15,7 @@ def handle_events():
             running = False
         else:
             map.handle_event(event)
+            player.handle_event(event)
             pass
 
 def reset_world():
