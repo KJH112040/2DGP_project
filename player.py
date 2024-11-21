@@ -4,9 +4,14 @@ from pico2d import load_image
 from state_machine import StateMachine, time_out, space_down, right_down, left_up, left_down, right_up, start_event, \
     a_down, up_keyup, down_keyup, up_keydown, down_keydown, f_down, attact_end
 import map
+import game_framework
 
 window_size_w=1200
 window_size_h=700
+
+TIME_PER_ACTION=0.3
+ACTION_PER_TIME=1.0/TIME_PER_ACTION
+FRAMES_PER_ACTION=4
 
 class Player:
     image=None
@@ -79,7 +84,7 @@ class xMove:
         pass
     @staticmethod
     def do(player):
-        player.frame=(player.frame+1)%4
+        player.frame=(player.frame+FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time)%4
         #map.state_machine.add_event('right_move',0)
         # player.state_machine.add_event('left_move', 0)
         pass
@@ -102,7 +107,7 @@ class yMove:
     def exit(player,e):pass
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 4
+        player.frame = (player.frame+FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time)%4
         #map.state_machine.add_event('up_move', 0)
         #map.state_machine.add_event('down_move', 0)
         pass
@@ -121,12 +126,12 @@ class Attact:
     def exit(player,e):pass
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 4
+        player.frame = (player.frame+FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time)%4
         player.check+=1
-        if player.check >3:
+        if player.check >125:
             player.state_machine.add_event(('ATTACT_END',0))
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * player.image_size_w // 4, player.action * player.image_size_h // 8,
+        player.image.clip_draw(int(player.frame) * player.image_size_w // 4, player.action * player.image_size_h // 8,
                                player.image_size_w // 4, player.image_size_h // 8, player.x, player.y, 100, 100)
