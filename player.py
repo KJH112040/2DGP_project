@@ -3,7 +3,6 @@ from tabnanny import check
 from pico2d import load_image
 from state_machine import StateMachine, time_out, space_down, right_down, left_up, left_down, right_up, start_event, \
     a_down, up_keyup, down_keyup, up_keydown, down_keydown, f_down, attact_end
-import map
 import game_framework
 
 window_size_w=1200
@@ -66,7 +65,7 @@ class Idle:
         pass
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame*player.image_size_w//4,player.action*player.image_size_h//8,
+        player.image.clip_draw(int(player.frame)*player.image_size_w//4,player.action*player.image_size_h//8,
                                player.image_size_w//4, player.image_size_h//8, player.x, player.y, 100,100)
 
 class xMove:
@@ -90,7 +89,7 @@ class xMove:
         pass
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * player.image_size_w // 4, player.action * player.image_size_h // 8,
+        player.image.clip_draw(int(player.frame) * player.image_size_w // 4, player.action * player.image_size_h // 8,
                                player.image_size_w // 4, player.image_size_h // 8, player.x, player.y, 100, 100)
 
 class yMove:
@@ -113,7 +112,7 @@ class yMove:
         pass
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * player.image_size_w // 4, player.action * player.image_size_h // 8,
+        player.image.clip_draw(int(player.frame) * player.image_size_w // 4, player.action * player.image_size_h // 8,
                                player.image_size_w // 4, player.image_size_h // 8, player.x, player.y, 100, 100)
 
 class Attact:
