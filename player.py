@@ -1,6 +1,6 @@
 from tabnanny import check
 
-from pico2d import load_image
+from pico2d import load_image, load_font
 from state_machine import StateMachine, time_out, space_down, right_down, left_up, left_down, right_up, start_event, \
     a_down, up_keyup, down_keyup, up_keydown, down_keydown, f_down, attact_end
 import game_framework
@@ -38,6 +38,7 @@ class Player:
                 # 캐릭터 사망 시 이벤트로 시작했던 위치로 되돌아 가도록!
             }
         )
+        self.font = load_font('ENCR10B.TTF',18)
 
     def update(self):
         self.state_machine.update()
