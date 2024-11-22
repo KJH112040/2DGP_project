@@ -22,6 +22,7 @@ class Player:
         self.action=7
         self.dir_x=0
         self.dir_y=0
+        self.hp=100
         if Player.image==None:
             self.image=load_image('weapon1.png')
         self.state_machine = StateMachine(self)  # 소년 객체의 state machine 생성
@@ -49,6 +50,7 @@ class Player:
 
     def draw(self):
         self.state_machine.draw()
+        self.font.draw(self.x-25,self.y+30,f'HP:{self.hp}',(255,10,10))
 
 class Idle:
     @staticmethod
