@@ -122,15 +122,13 @@ class Attact:
     @staticmethod
     def enter(player,e):
         if player.action >3:player.action-=4
-        player.check=0
         pass
     @staticmethod
     def exit(player,e):pass
     @staticmethod
     def do(player):
-        player.frame = (player.frame+FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time)%4
-        player.check+=1
-        if player.check >125:
+        player.frame = player.frame+FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time
+        if player.frame >4:
             player.state_machine.add_event(('ATTACT_END',0))
 
     @staticmethod
