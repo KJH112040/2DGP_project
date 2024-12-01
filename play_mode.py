@@ -4,6 +4,7 @@ import game_world
 import server
 from player import Player
 from map import Map
+import menu_mode
 
 # boy = None
 
@@ -14,6 +15,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        elif event.type==SDL_KEYDOWN and event.key==SDLK_m:
+            game_framework.push_mode(menu_mode)
         else:
             server.player.handle_event(event)
 
