@@ -2,12 +2,6 @@
 # 상태 이벤트 e = (종류, 실제값) 튜플로 정의
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_a, SDLK_UP, SDLK_DOWN, SDLK_f
 
-
-def player_move_right(e):pass
-def player_move_left(e):pass
-def player_move_up(e):pass
-def player_move_down(e):pass
-
 def attact_end(e):
     return e[0]=='ATTACT_END'
 def time_out(e): #e가 time out 인지 판단?
@@ -15,16 +9,8 @@ def time_out(e): #e가 time out 인지 판단?
 def start_event(e):
     return e[0]=='START'
 #----------key------------
-def space_down(e): #e가 space down인지 판단? True or False
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key==SDLK_SPACE
-
-def a_down(e):
-    return e[0]=='INPUT' and e[1].type == SDL_KEYDOWN and e[1].key==SDLK_a
-def f_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_f
-
 def right_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key ==SDLK_RIGHT
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
 
 def right_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
@@ -35,17 +21,27 @@ def left_down(e):
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
-def up_keydown(e):
+
+def upkey_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
 
-def up_keyup(e):
+def upkey_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_UP
 
-def down_keydown(e):
+def downkey_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_DOWN
 
-def down_keyup(e):
+def downkey_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_DOWN
+
+def f_down(e):
+    return e[0]=='INPUT' and e[1].type==SDL_KEYDOWN and e[1].key==SDLK_f
+
+def f_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_f
+
+def space_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 #-------------------------
 
 class StateMachine:

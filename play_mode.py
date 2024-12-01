@@ -1,9 +1,9 @@
 from pico2d import *
 import game_framework
-
 import game_world
-from map import Map
+import server
 from player import Player
+from map import Map
 
 # boy = None
 
@@ -15,18 +15,14 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         else:
-            map.handle_event(event)
-            player.handle_event(event)
+            server.player.handle_event(event)
 
 def init():
-    global map
-    global player
+    server.map = Map()
+    game_world.add_object(server.map, 0)
 
-    map = Map()
-    game_world.add_object(map, 0)
-
-    player = Player()
-    game_world.add_object(player, 1)
+    server.player = Player()
+    game_world.add_object(server.player, 1)
 
 
 def finish():
