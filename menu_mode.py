@@ -2,6 +2,7 @@ import pico2d
 
 import game_framework
 import game_world
+import equip_mode
 
 class Menu:
     def __init__(self):
@@ -57,8 +58,8 @@ def handle_events():
                         select_menu = 0
                 case pico2d.SDLK_RETURN:
                     match select_menu:
-                #        case 0:
-                #            game_framework.push_mode(equip_mode)
+                        case 0:
+                            game_framework.push_mode(equip_mode)
                 #        case 1:
                 #            game_framework.push_mode(bag_mode)
                 #        case 2:
@@ -74,3 +75,9 @@ def draw():
     #pannel.image.draw(400,300)
     game_world.render()
     pico2d.update_canvas()
+
+def pause():
+    pass
+
+def resume():
+    pass
