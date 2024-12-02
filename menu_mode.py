@@ -8,7 +8,22 @@ class Menu:
         self.image = pico2d.load_image('menu_window-Sheet.png')
 
     def draw(self):
+        global select_menu
         self.image.draw(600,350)
+        match select_menu:
+            case 0:
+                pico2d.draw_rectangle(pico2d.get_canvas_width()//2-192//2,pico2d.get_canvas_height()//2+256//4,
+                                      pico2d.get_canvas_width()//2+192//2,pico2d.get_canvas_height()//2+256//2)
+            case 1:
+                pico2d.draw_rectangle(pico2d.get_canvas_width()//2-192//2,pico2d.get_canvas_height()//2,
+                                      pico2d.get_canvas_width()//2+192//2,pico2d.get_canvas_height()//2+256//4)
+            case 2:
+                pico2d.draw_rectangle(pico2d.get_canvas_width() // 2 - 192 // 2, pico2d.get_canvas_height() // 2 - 256 // 4,
+                                     pico2d.get_canvas_width() // 2 + 192 // 2, pico2d.get_canvas_height() // 2)
+            case 3:
+                pico2d.draw_rectangle(pico2d.get_canvas_width() // 2 - 192 // 2, pico2d.get_canvas_height() // 2 - 256 // 2,
+                                      pico2d.get_canvas_width() // 2 + 192 // 2, pico2d.get_canvas_height() // 2 - 256 // 4)
+
 
     def update(self):
         pass
