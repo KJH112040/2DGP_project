@@ -17,6 +17,9 @@ class Equip:
         self.font.draw(pico2d.get_canvas_width() // 2 - 1100 // 2 + 55, pico2d.get_canvas_height() // 2 - 20,
                        "장비:", (0, 0, 0))
 
+    def update(self):
+        pass
+
 
 def init():
     global equip
@@ -43,7 +46,6 @@ def update():
 
 def draw():
     pico2d.clear_canvas()
-    #pannel.image.draw(400,300)
     game_world.render()
     pico2d.update_canvas()
 

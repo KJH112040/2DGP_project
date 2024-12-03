@@ -5,6 +5,7 @@ class Weapon:
         self.weapon_id = id  # 1 = 나무 막대기
         self.level = 0
         self.attact = 5 # 공격력
+        self.set = False
         match self.weapon_id:
             case 1:
                 self.image = load_image('wooden_stick.png')
