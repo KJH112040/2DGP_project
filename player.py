@@ -51,7 +51,7 @@ class Player:
             }
         )
         self.x,self.y=server.map.w//2,server.map.h//2
-        self.font = load_font('ENCR10B.TTF',18)
+        self.font = load_font('DungGeunMo.TTF',24)
 
     def update(self):
         self.state_machine.update()
@@ -71,7 +71,7 @@ class Player:
         # self.state_machine.draw()
         sx, sy = (self.x - server.map.window_left)*4, (self.y - server.map.window_bottom)*4
         self.image.clip_draw(int(self.frame) * 64, self.action*64, 64, 64, sx, sy,100,100)
-        self.font.draw(sx-25,sy+30,f'HP:{self.hp}',(255,10,10))
+        self.font.draw(sx-35,sy+35,f'HP:{self.hp}',(255,10,10))
 
 
     def get_bb(self):pass

@@ -6,7 +6,7 @@ import game_world
 class Equip:
     def __init__(self):
         self.image = pico2d.load_image('equip.png')
-        self.font = pico2d.load_font('ENCR10B.TTF', 18)
+        self.font = pico2d.load_font('DungGeunMo.TTF', 18)
 
     def draw(self):
         self.image.draw(600,350,1100,600)
