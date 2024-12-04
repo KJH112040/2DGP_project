@@ -5,11 +5,11 @@ from pico2d import load_image, load_font, get_canvas_width, get_canvas_height, c
 import server
 import game_framework
 from state_machine import StateMachine, time_out, space_down, right_down, left_up, left_down, right_up, start_event, \
-    f_down, attact_end, upkey_down, downkey_down, upkey_up,downkey_up,f_up
+     attact_end, upkey_down, downkey_down, upkey_up,downkey_up
 
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-RUN_SPEED_KMPH = 20.0  # Km / Hour
+RUN_SPEED_KMPH = 10.0  # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -34,7 +34,7 @@ class Player:
             {
                 Idle: {right_down: RunRight, left_down: RunLeft, left_up: RunRight, right_up: RunLeft,
                        upkey_down: RunUp, downkey_down: RunDown, upkey_up: RunDown, downkey_up: RunUp,
-                       f_down:Attact},
+                       space_down:Attact},
                 RunRight: {right_up: Idle, left_down: Idle, upkey_down: RunRightUp, upkey_up: RunRightDown,
                            downkey_down: RunRightDown, downkey_up: RunRightUp},
                 RunRightUp: {upkey_up: RunRight, right_up: RunUp, left_down: RunUp, downkey_down: RunRight},
@@ -47,7 +47,8 @@ class Player:
                 RunDown: {downkey_up: Idle, left_down: RunLeftDown, upkey_down: Idle, right_down: RunRightDown,
                           left_up: RunRightDown, right_up: RunLeftDown},
                 RunRightDown: {right_up: RunDown, downkey_up: RunRight, left_down: RunDown, upkey_down: RunRight},
-                Attact:{attact_end:Idle},
+                Attact:{attact_end:Idle,right_down: RunRight,left_down: RunLeft,upkey_down: RunUp, downkey_down: RunDown,
+                        left_up: Idle, right_up: Idle,upkey_up: Idle, downkey_up: Idle},
             }
         )
         self.x,self.y=server.map.w//2,server.map.h//2
@@ -91,58 +92,6 @@ class Idle:
     @staticmethod
     def do(player):
         pass
-    # @staticmethod
-    # def draw(player):
-    #     player.image.clip_draw(int(player.frame)*player.image_size_w//4,player.action*player.image_size_h//8,
-    #                            player.image_size_w//4, player.image_size_h//8, player.x, player.y, 100,100)
-
-# class xMove:
-#     @staticmethod
-#     def enter(player, e):
-#         if right_down(e) or left_up(e) :
-#             player.dir_x = 1
-#             player.action=6
-#         elif left_down(e) or right_up(e):
-#             player.dir_x = -1
-#             player.action=5
-#         pass
-#     @staticmethod
-#     def exit(player, e):
-#         pass
-#     @staticmethod
-#     def do(player):
-#         player.frame=(player.frame+FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time)%4
-#         #map.state_machine.add_event('right_move',0)
-#         # player.state_machine.add_event('left_move', 0)
-#         pass
-#     @staticmethod
-#     def draw(player):
-#         player.image.clip_draw(int(player.frame) * player.image_size_w // 4, player.action * player.image_size_h // 8,
-#                                player.image_size_w // 4, player.image_size_h // 8, player.x, player.y, 100, 100)
-#
-# class yMove:
-#     @staticmethod
-#     def enter(player,e):
-#         if up_keydown(e) or down_keyup(e):
-#             player.dir_y = 1
-#             player.action=4
-#         elif down_keydown(e)or up_keyup(e):
-#             player.dir_y = -1
-#             player.action=7
-#         pass
-#     @staticmethod
-#     def exit(player,e):pass
-#     @staticmethod
-#     def do(player):
-#         player.frame = (player.frame+FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time)%4
-#         #map.state_machine.add_event('up_move', 0)
-#         #map.state_machine.add_event('down_move', 0)
-#         pass
-#     @staticmethod
-#     def draw(player):
-#         player.image.clip_draw(int(player.frame) * player.image_size_w // 4, player.action * player.image_size_h // 8,
-#                                player.image_size_w // 4, player.image_size_h // 8, player.x, player.y, 100, 100)
-
 
 class RunRight:
     @staticmethod
@@ -284,15 +233,16 @@ class RunDown:
 class Attact:
     @staticmethod
     def enter(player,e):
-        player.move = True
+        player.frame = 0
         if player.action >3:player.action-=4
+        player.move = True
         pass
     @staticmethod
     def exit(player,e):pass
     @staticmethod
     def do(player):
-        player.frame = player.frame+FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time
-        if player.frame >4:
+        if player.frame >3.9:
+            player.move=False
             player.state_machine.add_event(('ATTACT_END',0))
 
     # @staticmethod

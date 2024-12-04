@@ -34,12 +34,6 @@ def downkey_down(e):
 def downkey_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_DOWN
 
-def f_down(e):
-    return e[0]=='INPUT' and e[1].type==SDL_KEYDOWN and e[1].key==SDLK_f
-
-def f_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_f
-
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 #-------------------------
