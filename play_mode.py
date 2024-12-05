@@ -4,6 +4,8 @@ import game_world
 import server
 from player import Player
 from map import Map
+from item import Weapon
+from monster import Monster
 import menu_mode
 
 # boy = None
@@ -26,6 +28,14 @@ def init():
 
     server.player = Player()
     game_world.add_object(server.player, 1)
+
+    for i in range(50):
+        monster = Monster()
+        game_world.add_object(monster,1)
+
+    for i in range(5):
+        server.bag[i][0]=Weapon(1)
+        server.bag[i][1]=1
 
 
 def finish():

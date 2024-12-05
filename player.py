@@ -1,6 +1,6 @@
 import math
 
-from pico2d import load_image, load_font, get_canvas_width, get_canvas_height, clamp
+from pico2d import load_image, load_font, get_canvas_width, get_canvas_height, clamp, draw_rectangle
 
 import server
 import game_framework
@@ -73,9 +73,15 @@ class Player:
         sx, sy = (self.x - server.map.window_left)*4, (self.y - server.map.window_bottom)*4
         self.image.clip_draw(int(self.frame) * 64, self.action*64, 64, 64, sx, sy,100,100)
         self.font.draw(sx-35,sy+35,f'HP:{self.hp}',(255,10,10))
+        draw_rectangle((self.x-server.map.window_left-5)*4,(self.y-server.map.window_bottom-10)*4,
+                (self.x-server.map.window_left+5)*4,(self.y-server.map.window_bottom+5)*4)
 
 
-    def get_bb(self):pass
+    def get_bb(self):
+        if self.cur_state == Attact:
+            pass
+        return (self.x-server.map.window_left-5,self.y-server.map.window_bottom-10,
+                self.x-server.map.window_left+5,self.y-server.map.window_bottom+5)
     def handle_collision(self,group,other):pass
 
 class Idle:
