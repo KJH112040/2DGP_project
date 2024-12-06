@@ -28,7 +28,6 @@ class Monster:
             Monster.images = {}
             for name in animation_names:
                 Monster.images[name] = [load_image("./monster/"+name+"/%d"%i+".png")for i in range(4)]
-            Monster.font = load_font('DungGeunMo.ttf',24)
 
     def __init__(self,x=None,y=None):
         self.x = x if x else random.randint(20,1220)
@@ -40,6 +39,7 @@ class Monster:
         self.state = 'stand'
         self.hp = 50
         self.tx, self.ty =0,0
+        self.font = load_font('DungGeunMo.ttf', 24)
         self.build_behavior_tree()
 
     def get_bb(self):
@@ -59,6 +59,7 @@ class Monster:
                                                                        , (self.y-server.map.window_bottom)*4, 40, 40)
         draw_rectangle((self.x-server.map.window_left-5)*4,(self.y-server.map.window_bottom-5)*4,
                 (self.x-server.map.window_left+5)*4,(self.y-server.map.window_bottom+5)*4)
+        self.font.draw((self.x-server.map.window_left-6)*4,(self.y-server.map.window_bottom+7)*4,f'HP:{self.hp}',(255,50,50))
 
     def handle_event(self,event):pass
 

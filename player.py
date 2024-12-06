@@ -75,6 +75,18 @@ class Player:
         self.font.draw(sx-35,sy+35,f'HP:{self.hp}',(255,10,10))
         draw_rectangle((self.x-server.map.window_left-5)*4,(self.y-server.map.window_bottom-10)*4,
                 (self.x-server.map.window_left+5)*4,(self.y-server.map.window_bottom+5)*4)
+        if self.action==0:
+            draw_rectangle((self.x-server.map.window_left-7)*4,(self.y-server.map.window_bottom)*4,
+                           (self.x-server.map.window_left+7)*4,(self.y-server.map.window_bottom+9)*4)
+        if self.action==1:
+            draw_rectangle((self.x - server.map.window_left - 9)*4, (self.y - server.map.window_bottom - 10)*4,
+                           (self.x - server.map.window_left)*4, (self.y - server.map.window_bottom + 5)*4)
+        if self.action==2:
+            draw_rectangle((self.x - server.map.window_left)*4, (self.y - server.map.window_bottom - 10)*4,
+                           (self.x - server.map.window_left + 9)*4, (self.y - server.map.window_bottom + 5)*4)
+        if self.action==3:
+            draw_rectangle((self.x - server.map.window_left - 7)*4, (self.y - server.map.window_bottom - 15)*4,
+                            (self.x - server.map.window_left + 7)*4, (self.y - server.map.window_bottom)*4)
 
 
     def get_bb(self):

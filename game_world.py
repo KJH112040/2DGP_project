@@ -1,3 +1,5 @@
+import server
+
 objects = [[] for _ in range(4)]
 collision_pairs={}
 
@@ -55,6 +57,16 @@ def collide(a, b):
 
     return True
 
+def attack_collide(a, b):
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if a[0] > right_b: return False
+    if a[2] < left_b: return False
+    if a[3] < bottom_b: return False
+    if a[1] > top_b: return False
+
+    return True
+
 
 def add_collision_pair(group, a, b):
     if group not in collision_pairs:
@@ -73,4 +85,22 @@ def handle_collisions():
                 if collide(a, b):
                     a.handle_collision(group, b)
                     b.handle_collision(group, a)
+
+                if group == 'attack:monster':
+                    if a.action==0:
+                        a_bb = [a.x-server.map.window_left-7,a.y-server.map.window_bottom,
+                                a.x-server.map.window_left+7,a.y-server.map.window_bottom+9]
+                    elif a.action==1:
+                        a_bb = [a.x - server.map.window_left - 9, a.y - server.map.window_bottom - 10,
+                                a.x - server.map.window_left, a.y - server.map.window_bottom + 5]
+                    elif a.action==2:
+                        a_bb = [a.x - server.map.window_left, a.y - server.map.window_bottom - 10,
+                                a.x - server.map.window_left + 9, a.y - server.map.window_bottom + 5]
+                    elif a.action==3:
+                        a_bb = [a.x - server.map.window_left - 7, a.y - server.map.window_bottom - 15,
+                                a.x - server.map.window_left + 7, a.y - server.map.window_bottom]
+
+                    if attack_collide(a_bb,b):
+                        a.handle_collision(group, b)
+                        b.handle_collision(group, a)
 
