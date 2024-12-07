@@ -29,7 +29,6 @@ def remove_collision_object(o):
         if o in pairs[1]:
             pairs[1].remove(o)
 
-
 def remove_object(o):
     for layer in objects:
         if o in layer:
@@ -82,25 +81,23 @@ def handle_collisions():
     for group, pairs in collision_pairs.items():
         for a in pairs[0]:
             for b in pairs[1]:
-                if collide(a, b):
-                    a.handle_collision(group, b)
-                    b.handle_collision(group, a)
-
                 if group == 'attack:monster':
-                    if a.action==0:
-                        a_bb = [a.x-server.map.window_left-7,a.y-server.map.window_bottom,
-                                a.x-server.map.window_left+7,a.y-server.map.window_bottom+9]
-                    elif a.action==1:
-                        a_bb = [a.x - server.map.window_left - 9, a.y - server.map.window_bottom - 10,
-                                a.x - server.map.window_left, a.y - server.map.window_bottom + 5]
-                    elif a.action==2:
-                        a_bb = [a.x - server.map.window_left, a.y - server.map.window_bottom - 10,
-                                a.x - server.map.window_left + 9, a.y - server.map.window_bottom + 5]
-                    elif a.action==3:
-                        a_bb = [a.x - server.map.window_left - 7, a.y - server.map.window_bottom - 15,
-                                a.x - server.map.window_left + 7, a.y - server.map.window_bottom]
+                    if server.player.col_attack:
+                        global a_bb
+                        if a.action==0:
+                            a_bb = [a.x-7,a.y,a.x+7,a.y+9]
+                        elif a.action==1:
+                            a_bb = [a.x- 9, a.y- 10,a.x, a.y + 5]
+                        elif a.action==2:
+                            a_bb = [a.x , a.y- 10,a.x + 9, a.y + 5]
+                        elif a.action==3:
+                            a_bb = [a.x - 7, a.y - 15,a.x + 7, a.y]
 
-                    if attack_collide(a_bb,b):
+                        if attack_collide(a_bb,b):
+                            a.handle_collision(group, b)
+                            b.handle_collision(group, a)
+                else:
+                    if collide(a, b):
+                        print('아ㅏㅇ')
                         a.handle_collision(group, b)
                         b.handle_collision(group, a)
-

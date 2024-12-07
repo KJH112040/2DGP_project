@@ -10,10 +10,11 @@ class Bag:
     def __init__(self):
         self.image = pico2d.load_image('bag.png')
         self.font = pico2d.load_font('DungGeunMo.TTF', 18)
+        self.select = 0
         item_x = pico2d.get_canvas_width() // 2 - 1100 // 2 + 90
         item_y = pico2d.get_canvas_height() // 2 + 600 // 2 - 90
         for i in range(len(server.bag)//2):
-            if type(server.bag[i][0])==item.Weapon or type(server.bag[i][0])==item.Potion:
+            if type(server.bag[i][0])!=list:
                 server.bag[i][0].x = item_x
                 server.bag[i][0].y = item_y
                 if item_x < pico2d.get_canvas_width() // 2 + 1100 // 2 - 90:
@@ -26,6 +27,8 @@ class Bag:
         self.image.draw(600, 350, 1100, 600)
         self.font.draw(pico2d.get_canvas_width() // 2 - 1100 // 2 + 55, pico2d.get_canvas_height() // 2 + 600 // 2 - 50,
                        "배낭:", (0, 0, 0))
+        pico2d.draw_rectangle(server.bag[self.select][0].x-30,server.bag[self.select][0].y-30,
+                       server.bag[self.select][0].x+30,server.bag[self.select][0].y+30)
         for i in range(len(server.bag)//2):
             if type(server.bag[i][0]) == item.Weapon:
                 server.bag[i][0].draw()
@@ -61,6 +64,18 @@ def handle_events():
             match event.key:
                 case pico2d.SDLK_ESCAPE:
                     game_framework.pop_mode()
+                case pico2d.SDLK_LEFT:
+                    if bag.select != 0:
+                        if type(server.bag[bag.select-1][0]) != list:
+                            bag.select -= 1
+                case pico2d.SDLK_RIGHT:
+                    if bag.select != 19:
+                        if type(server.bag[bag.select + 1][0]) != list:
+                            bag.select += 1
+                case pico2d.SDLK_RETURN:
+                    if type(server.bag[bag.select][0])==item.Potion:
+                        server.bag[bag.select][1]-=1
+                        # 플레이어 회복 넣기
 
 
 def update():

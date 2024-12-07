@@ -28,10 +28,14 @@ def init():
 
     server.player = Player()
     game_world.add_object(server.player, 1)
+    game_world.add_collision_pair('player:monster',server.player,None)
+    game_world.add_collision_pair('attack:monster', server.player, None)
 
-    for i in range(50):
+    for _ in range(50):
         monster = Monster()
         game_world.add_object(monster,1)
+        game_world.add_collision_pair('player:monster', None, monster)
+        game_world.add_collision_pair('attack:monster', None, monster)
 
     for i in range(5):
         server.bag[i][0]=Weapon(1)
@@ -47,7 +51,7 @@ def finish():
 
 def update():
     game_world.update()
-    #delay(0.01)
+    game_world.handle_collisions()
 
 def draw():
     clear_canvas()

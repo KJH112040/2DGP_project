@@ -4,8 +4,10 @@ from pico2d import load_image, load_font, get_canvas_width, get_canvas_height, c
 
 import server
 import game_framework
+from  game_world import add_collision_pair,remove_collision_object
 from state_machine import StateMachine, time_out, space_down, right_down, left_up, left_down, right_up, start_event, \
      attact_end, upkey_down, downkey_down, upkey_up,downkey_up
+import play_mode
 
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
@@ -26,6 +28,7 @@ class Player:
         self.dir=0
         self.move =False
         self.hp=100
+        self.de = 10
         if Player.image==None:
             self.image=load_image('weapon1.png')
         self.state_machine = StateMachine(self)  # 소년 객체의 state machine 생성
@@ -34,7 +37,7 @@ class Player:
             {
                 Idle: {right_down: RunRight, left_down: RunLeft, left_up: RunRight, right_up: RunLeft,
                        upkey_down: RunUp, downkey_down: RunDown, upkey_up: RunDown, downkey_up: RunUp,
-                       space_down:Attact},
+                       space_down:Attack},
                 RunRight: {right_up: Idle, left_down: Idle, upkey_down: RunRightUp, upkey_up: RunRightDown,
                            downkey_down: RunRightDown, downkey_up: RunRightUp},
                 RunRightUp: {upkey_up: RunRight, right_up: RunUp, left_down: RunUp, downkey_down: RunRight},
@@ -47,12 +50,14 @@ class Player:
                 RunDown: {downkey_up: Idle, left_down: RunLeftDown, upkey_down: Idle, right_down: RunRightDown,
                           left_up: RunRightDown, right_up: RunLeftDown},
                 RunRightDown: {right_up: RunDown, downkey_up: RunRight, left_down: RunDown, upkey_down: RunRight},
-                Attact:{attact_end:Idle,right_down: RunRight,left_down: RunLeft,upkey_down: RunUp, downkey_down: RunDown,
+                Attack:{attact_end:Idle,right_down: RunRight,left_down: RunLeft,upkey_down: RunUp, downkey_down: RunDown,
                         left_up: Idle, right_up: Idle,upkey_up: Idle, downkey_up: Idle},
             }
         )
         self.x,self.y=server.map.w//2,server.map.h//2
         self.font = load_font('DungGeunMo.TTF',24)
+        self.inv = 0
+        self.col_attack = False
 
     def update(self):
         self.state_machine.update()
@@ -63,7 +68,8 @@ class Player:
 
         self.x = clamp(10.0, self.x, server.map.w - 10.0)
         self.y = clamp(15.0, self.y, server.map.h - 15.0)
-        pass
+
+        if self.inv > 0: self.inv -= 1
 
     def handle_event(self, event):
         self.state_machine.add_event(('INPUT',event))
@@ -90,11 +96,14 @@ class Player:
 
 
     def get_bb(self):
-        if self.cur_state == Attact:
-            pass
-        return (self.x-server.map.window_left-5,self.y-server.map.window_bottom-10,
-                self.x-server.map.window_left+5,self.y-server.map.window_bottom+5)
-    def handle_collision(self,group,other):pass
+        return self.x-5,self.y-10,self.x+5,self.y+5
+
+    def handle_collision(self,group,other):
+        match group:
+            case 'player:monster':
+                if self.inv == 0:
+                    self.hp -= other.att // self.de
+                    self.inv = 100
 
 class Idle:
     @staticmethod
@@ -248,17 +257,20 @@ class RunDown:
         pass
 
 
-class Attact:
+class Attack:
     @staticmethod
     def enter(player,e):
         player.frame = 0
         if player.action >3:player.action-=4
         player.move = True
+        player.col_attack = True
         pass
     @staticmethod
     def exit(player,e):pass
     @staticmethod
     def do(player):
+        if player.frame>2:
+            player.col_attack = False
         if player.frame >3.9:
             player.move=False
             player.state_machine.add_event(('ATTACT_END',0))

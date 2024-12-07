@@ -5,6 +5,7 @@ import math
 import game_framework
 from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
 import server
+import item
 
 # zombie Run Speed
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
@@ -38,16 +39,19 @@ class Monster:
         self.frame = random.randint(0, 3)
         self.state = 'stand'
         self.hp = 50
+        self.att = 10
+        self.de = 10
+        self.inv = 0
         self.tx, self.ty =0,0
         self.font = load_font('DungGeunMo.ttf', 24)
         self.build_behavior_tree()
 
     def get_bb(self):
-        return (self.x-server.map.window_left-5,self.y-server.map.window_bottom-5,
-                self.x-server.map.window_left+5,self.y-server.map.window_bottom+5)
+        return self.x-5,self.y-5,self.x+5,self.y+5
 
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
+        if self.inv > 0: self.inv -= 1
         self.bt.run()
 
     def draw(self):
@@ -63,7 +67,17 @@ class Monster:
 
     def handle_event(self,event):pass
 
-    def handle_collision(self,group,other):pass
+    def handle_collision(self,group,other):
+        match group:
+            case 'attack:monster':
+                if server.player.col_attack:
+                    if self.inv == 0:
+                        self.state = 'hit1'
+                        for i in range(len(server.bag)//2):
+                            if type(server.bag[i][0])== item.Weapon:
+                                if server.bag[i][0].set:
+                                    self.hp-=server.bag[i][0].attack // self.de
+                        self.inv = 200
 
     def set_random_location(self):
         self.tx, self.ty = random.randint(20, 1220), random.randint(20, 840)
@@ -93,10 +107,24 @@ class Monster:
         else:
             return BehaviorTree.FAIL
 
+    def state_check(self, state):
+        if state=='hit1' or state =='stand' and self.inv!=0:
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
     def move_to_player(self, r=0.5):
         self.state='move'
         self.move_slightly_to(server.player.x,server.player.y)
         if self.distance_less_than(server.player.x,server.player.y, self.x,self.y,r):
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.RUNNING
+
+    def stop_move(self,i):
+        if i> 100:
+            self.state = 'stand'
+        if i > 0:
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
@@ -105,11 +133,16 @@ class Monster:
         a1 = Action('Set random location',self.set_random_location)
         a2 = Action('Move to',self.move_to)
         a3 = Action('Move to player',self.move_to_player)
+        a4 = Action('멈추기',self.stop_move,self.inv)
 
         c1 = Condition('player가 근처인가?',self.is_player_nearby,2)
+        c2 = Condition('몬스터 타격',self.state_check, self.state)
 
         root = wander = Sequence('Wander',a1,a2)
         root = chase_player = Sequence('player에게 접근', c1, a3)
+        root = stop = Sequence('아프면 멈추기', c2, a4)
 
-        root = chase_or_flee = Selector('추격 또는 배회', chase_player,wander)
+        root = stop_or_chase = Selector('멈출지 쫓을지', stop,chase_player)
+
+        root = chase_or_flee = Selector('추격 또는 배회', stop_or_chase,wander)
         self.bt = BehaviorTree(root)

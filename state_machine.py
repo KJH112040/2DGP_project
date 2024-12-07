@@ -47,7 +47,7 @@ class StateMachine:
     def start(self,state):
         self.cur_state = state #시작 상태를 받아서, 그걸로 현재 상태를 정의.
         self.cur_state.enter(self.obj, ('START', 0))
-        print(f'Enter into {state}')
+        #print(f'Enter into {state}')
 
     def update(self):
         self.cur_state.do(self.obj) #Idle.do()
@@ -62,20 +62,20 @@ class StateMachine:
             # 상태 변환 테이블를 이용
             for check_event, next_state in self.transitions[self.cur_state].items():
                 if check_event(e): #
-                    print(f'Exit from {self.cur_state}')
+                    #print(f'Exit from {self.cur_state}')
                     self.cur_state.exit(self.obj,e)
                     self.cur_state = next_state
-                    print(f'Enter into {next_state}')
+                    #print(f'Enter into {next_state}')
                     self.cur_state.enter(self.obj,e) # 상태 변환의 이유를 명확히 알려줘.
                     return # 제대로 이벤트에 따른 상태 변환 완료
             #이 시점으로 왔다는 것은, event에 따른 전환 못함.
-            print(f'    WARNING: {e} not handled at state {self.cur_state}')
+            #print(f'    WARNING: {e} not handled at state {self.cur_state}')
 
     def draw(self):
         self.cur_state.draw(self.obj)
 
     def add_event(self, e):
-        print(f'    DEBUG: add event {e}')
+        #print(f'    DEBUG: add event {e}')
         self.event_q.append(e)
         pass
 

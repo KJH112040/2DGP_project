@@ -4,7 +4,7 @@ class Weapon:
     def __init__(self, id):
         self.weapon_id = id  # 1 = 나무 막대기
         self.level = 0
-        self.attack = 5 # 공격력
+        self.attack = 10 # 공격력
         self.set = False
         match self.weapon_id:
             case 1:
