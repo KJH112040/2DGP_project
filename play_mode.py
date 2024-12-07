@@ -37,6 +37,8 @@ def init():
         server.bag[i][0]=Weapon(1)
         server.bag[i][1]=1
 
+    server.bag[0][0].set = True
+
 
 def finish():
     game_world.clear()
