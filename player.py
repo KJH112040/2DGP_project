@@ -26,7 +26,7 @@ class Player:
         self.action=7
         self.dir=0
         self.move =False
-        self.hp=1
+        self.hp=100
         self.de = 10
         if Player.image==None:
             self.image=load_image('weapon1.png')

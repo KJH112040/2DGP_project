@@ -40,7 +40,7 @@ class Monster:
         self.frame = random.randint(0, 3)
         self.state = 'stand'
         self.hp = 75
-        self.att = 10
+        self.att = 20
         self.de = 10
         self.inv = 0
         self.died_monster = False
