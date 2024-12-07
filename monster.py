@@ -4,6 +4,7 @@ import random
 import math
 import game_framework
 from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
+import game_world
 import server
 import item
 
@@ -38,10 +39,11 @@ class Monster:
         self.speed = 0.0
         self.frame = random.randint(0, 3)
         self.state = 'stand'
-        self.hp = 50
+        self.hp = 75
         self.att = 10
         self.de = 10
         self.inv = 0
+        self.died_monster = False
         self.tx, self.ty =0,0
         self.font = load_font('DungGeunMo.ttf', 24)
         self.build_behavior_tree()
@@ -63,7 +65,7 @@ class Monster:
                                                                        , (self.y-server.map.window_bottom)*4, 40, 40)
         draw_rectangle((self.x-server.map.window_left-5)*4,(self.y-server.map.window_bottom-5)*4,
                 (self.x-server.map.window_left+5)*4,(self.y-server.map.window_bottom+5)*4)
-        self.font.draw((self.x-server.map.window_left-6)*4,(self.y-server.map.window_bottom+7)*4,f'HP:{self.hp}',(255,50,50))
+        if self.hp > 0: self.font.draw((self.x-server.map.window_left-6)*4,(self.y-server.map.window_bottom+7)*4,f'HP:{self.hp}',(255,50,50))
 
     def handle_event(self,event):pass
 
@@ -128,21 +130,45 @@ class Monster:
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
+
+    def hp_check(self):
+        if self.hp <= 0:
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
+    def die(self):
+        if self.died_monster==False:
+            self.frame=0
+            self.died_monster=True
+        self.state='die1'
+        if self.frame > 3.9:
+            game_world.remove_object(self)
+            server.monster_count-=1
+        if self.state == 'die1':
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.RUNNING
+
     
     def build_behavior_tree(self):
         a1 = Action('Set random location',self.set_random_location)
         a2 = Action('Move to',self.move_to)
         a3 = Action('Move to player',self.move_to_player)
         a4 = Action('멈추기',self.stop_move,self.inv)
+        a5 = Action('죽음', self.die)
 
         c1 = Condition('player가 근처인가?',self.is_player_nearby,2)
         c2 = Condition('몬스터 타격',self.state_check, self.state)
+        c3 = Condition('die',self.hp_check)
 
         root = wander = Sequence('Wander',a1,a2)
         root = chase_player = Sequence('player에게 접근', c1, a3)
         root = stop = Sequence('아프면 멈추기', c2, a4)
+        root = die = Sequence('죽음',c3,a5)
 
-        root = stop_or_chase = Selector('멈출지 쫓을지', stop,chase_player)
+        root = die_or_stop = Selector('죽었나?맞았나?', die, stop)
+        root = stop_or_chase = Selector('쫓을 수 있나', die_or_stop,chase_player)
 
         root = chase_or_flee = Selector('추격 또는 배회', stop_or_chase,wander)
         self.bt = BehaviorTree(root)

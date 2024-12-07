@@ -3,4 +3,5 @@
 
 player = None
 map = None
+monster_count = None
 bag = [[[]for _ in range(2)]for _ in range(20)]

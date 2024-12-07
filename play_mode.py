@@ -37,6 +37,8 @@ def init():
         game_world.add_collision_pair('player:monster', None, monster)
         game_world.add_collision_pair('attack:monster', None, monster)
 
+    server.monster_count = 50
+
     for i in range(5):
         server.bag[i][0]=Weapon(1)
         server.bag[i][1]=1

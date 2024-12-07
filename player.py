@@ -4,10 +4,9 @@ from pico2d import load_image, load_font, get_canvas_width, get_canvas_height, c
 
 import server
 import game_framework
-from  game_world import add_collision_pair,remove_collision_object
 from state_machine import StateMachine, time_out, space_down, right_down, left_up, left_down, right_up, start_event, \
      attact_end, upkey_down, downkey_down, upkey_up,downkey_up
-import play_mode
+import you_die_mode
 
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
@@ -27,7 +26,7 @@ class Player:
         self.action=7
         self.dir=0
         self.move =False
-        self.hp=100
+        self.hp=1
         self.de = 10
         if Player.image==None:
             self.image=load_image('weapon1.png')
@@ -70,6 +69,10 @@ class Player:
         self.y = clamp(15.0, self.y, server.map.h - 15.0)
 
         if self.inv > 0: self.inv -= 1
+
+        if self.hp <=0:
+            game_framework.push_mode(you_die_mode)
+            self.state_machine.start(Idle)
 
     def handle_event(self, event):
         self.state_machine.add_event(('INPUT',event))

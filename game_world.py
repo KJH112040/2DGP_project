@@ -1,4 +1,5 @@
 import server
+from monster import Monster
 
 objects = [[] for _ in range(4)]
 collision_pairs={}
@@ -14,6 +15,12 @@ def update():
     for layer in objects:
         for o in layer:
             o.update()
+    if server.monster_count < 40:
+        monster = Monster()
+        add_object(monster, 1)
+        add_collision_pair('player:monster', None, monster)
+        add_collision_pair('attack:monster', None, monster)
+        server.monster_count+=1
 
 
 def render():
@@ -98,6 +105,5 @@ def handle_collisions():
                             b.handle_collision(group, a)
                 else:
                     if collide(a, b):
-                        print('아ㅏㅇ')
                         a.handle_collision(group, b)
                         b.handle_collision(group, a)
