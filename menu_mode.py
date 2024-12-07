@@ -4,6 +4,7 @@ import game_framework
 import game_world
 import equip_mode
 import bag_mode
+import upgrade_mode
 
 class Menu:
     def __init__(self):
@@ -63,8 +64,8 @@ def handle_events():
                             game_framework.push_mode(equip_mode)
                         case 1:
                             game_framework.push_mode(bag_mode)
-                #        case 2:
-                #            game_framework.push_mode(upgrade_mode)
+                        case 2:
+                            game_framework.push_mode(upgrade_mode)
                         case 3:
                             game_framework.quit()
 
