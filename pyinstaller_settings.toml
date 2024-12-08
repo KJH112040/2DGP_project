@@ -1,0 +1,23 @@
+# pyinstaller 로 exe 를 build 하기 위한 설정
+
+# 1. 메인 파일 이름을 지정하세요.
+main_file = 'main.py'
+
+# 2. 데이타 파일들을 지정하세요.
+data_files = [
+    'bag.png',
+    'DungGeunMo.ttf',
+    'equip.png',
+    'menu_window-Sheet.png',
+    'test_map.png',
+    'tuk_credit.png',
+    'upgrade.png',
+    'weapon1.png',
+    'wooden_stick.png'
+]
+
+# 3. 데이타가 들어있는 폴더들을 지정하세요.
+data_folders = [
+    'monster'
+]
+
